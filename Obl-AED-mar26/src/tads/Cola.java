@@ -9,9 +9,11 @@ package tads;
  */
 public class Cola<T> implements ICola<T> {
 
+    
+    
     @Override
     public void enqueue(T dato) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            
     }
 
     @Override
