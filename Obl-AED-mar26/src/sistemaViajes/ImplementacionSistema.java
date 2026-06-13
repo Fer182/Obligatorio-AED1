@@ -8,7 +8,7 @@ public class ImplementacionSistema implements Sistema {
         return Retorno.noImplementada();
     }
 
-    @Override
+    @Override 
     public Retorno registrarPasajero(String cedula, String nombre, int edad, Categoria categoria) {
         return Retorno.noImplementada();
     }
