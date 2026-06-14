@@ -10,12 +10,12 @@ import sistemaViajes.Categoria;
  *
  * @author FERAR
  */
-public class Pasajero {
+public class Pasajero implements Comparable<Pasajero> {
     private String cedula;
     private String nombre;
     private int edad; 
     private Categoria categoria; 
-
+    
     public Pasajero(String cedula, String nombre, int edad, Categoria categoria) {
         this.cedula = cedula;
         this.nombre = nombre;
@@ -59,5 +59,13 @@ public class Pasajero {
     Pasajero other = (Pasajero) obj;
 
     return this.cedula.equals(other.cedula);
+   
+    }
+
+    @Override
+    public int compareTo(Pasajero p) {
+        return this.cedula.compareTo(p.cedula);
+    }
+    
 }
-}
+

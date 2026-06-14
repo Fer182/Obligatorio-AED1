@@ -1,6 +1,9 @@
 package sistemaViajes;
 
 //BRENDON BURIOL 331209, FERNANDO ARRIONDO 317501
+
+import dominio.Pasajero;
+
 public class ImplementacionSistema implements Sistema {
 
     @Override
@@ -14,7 +17,7 @@ public class ImplementacionSistema implements Sistema {
         {
         return Retorno.error1();
         }
-        if(!cedula.matches("SADASDAS")){
+        if (!cedula.matches("(\\d\\.\\d{3}\\.\\d{3}-\\d)|(\\d{3}\\.\\d{3}-\\d)")) {
         return Retorno.error2();
         }
         if(edad < 0)
@@ -25,7 +28,9 @@ public class ImplementacionSistema implements Sistema {
         {
         return Retorno.error4();
         }
-        //falta agregarlo
+        Pasajero nuevo = new Pasajero(cedula, nombre, edad, categoria);
+        
+        //nuevo.agr
         return Retorno.ok();
                 
     }
