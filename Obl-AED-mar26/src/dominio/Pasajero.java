@@ -39,5 +39,25 @@ public class Pasajero {
         return categoria;
     }
     
+    @Override
+    public String toString() {
+    return cedula + ";" + nombre + ";" + edad + ";" + categoria;
     
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+
+    if (this == obj) {
+        return true;
+    }
+
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+
+    Pasajero other = (Pasajero) obj;
+
+    return this.cedula.equals(other.cedula);
+}
 }

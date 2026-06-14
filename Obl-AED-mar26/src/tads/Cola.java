@@ -9,36 +9,51 @@ package tads;
  */
 public class Cola<T> implements ICola<T> {
 
-    
+     private Nodo<T> inicio;
+    private Nodo <T> fin;
+    private int cant = 0;
     
     @Override
     public void enqueue(T dato) {
-            
+        if(isEmpty()){
+            inicio = new Nodo <>(dato);
+            fin = inicio;
+        }else{
+            fin.sig= new Nodo<>(dato);
+            fin = fin.sig;
+        }
+        cant++;
     }
 
     @Override
     public void dequeue() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        inicio = inicio.sig;
+        if (inicio == null){
+        fin = null;
+        
+        }
+        cant--;
     }
 
     @Override
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return inicio == null && fin == null;
     }
 
     @Override
     public T peek() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return inicio.dato; 
     }
 
     @Override
     public void clear() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        inicio = null;
+        fin = null;
     }
 
     @Override
-    public void size() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public int size() {
+        return cant;
     }
     
     private class Nodo <Q> {

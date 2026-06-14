@@ -1,6 +1,6 @@
 package sistemaViajes;
 
-//Agregar aquí nombres y números de estudiante de los integrantes del equipo
+//BRENDON BURIOL 331209, FERNANDO ARRIONDO 317501
 public class ImplementacionSistema implements Sistema {
 
     @Override
@@ -10,7 +10,24 @@ public class ImplementacionSistema implements Sistema {
 
     @Override 
     public Retorno registrarPasajero(String cedula, String nombre, int edad, Categoria categoria) {
-        return Retorno.noImplementada();
+        if(cedula==null || cedula.isEmpty() || nombre == null || nombre.isEmpty() || categoria == null)
+        {
+        return Retorno.error1();
+        }
+        if(!cedula.matches("SADASDAS")){
+        return Retorno.error2();
+        }
+        if(edad < 0)
+        {
+            return Retorno.error3();
+        }
+        if(cedula.equals(cedula))
+        {
+        return Retorno.error4();
+        }
+        //falta agregarlo
+        return Retorno.ok();
+                
     }
 
     @Override

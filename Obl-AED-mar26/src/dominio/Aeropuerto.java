@@ -6,6 +6,9 @@ package dominio;
 
 //import tads.Cola;
 
+import tads.Cola;
+
+
 /**
  *
  * @author FERAR
@@ -13,12 +16,13 @@ package dominio;
 public class Aeropuerto {
     private String codigo;
     private String nombre; 
-    //private Cola ViajesEnEspera;
+    private Cola<Vuelo> viajesEnEspera;
 
-    public Aeropuerto(String codigo, String nombre) {
-        this.codigo = codigo;
-        this.nombre = nombre;
-    }
+public Aeropuerto(String codigo, String nombre) {
+    this.codigo = codigo;
+    this.nombre = nombre;
+    this.viajesEnEspera = new Cola<>();
+}
    
     
 }

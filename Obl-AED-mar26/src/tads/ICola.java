@@ -14,7 +14,7 @@ public interface ICola <T>{
     boolean isEmpty();
     T peek();
     void clear();
-    void size();
+    int size();
     
     
     
