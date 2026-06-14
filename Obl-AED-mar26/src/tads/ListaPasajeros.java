@@ -33,8 +33,4 @@ public class ListaPasajeros {
         }
         return "No se encontro pasajero";
     }
-    
-    //public Pasajero buscarPasajero (String cedula) {
-        //listaDePasajeros.obtenerElemento(pasajero);
-    //}
 }
