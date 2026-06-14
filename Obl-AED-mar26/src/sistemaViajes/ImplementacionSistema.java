@@ -5,11 +5,14 @@ package sistemaViajes;
 import dominio.Aeropuerto;
 import dominio.Pasajero;
 import dominio.PasajeroWrapper;
+import dominio.Vuelo;
 import tads.ILista;
 
 public class ImplementacionSistema implements Sistema {
     
     private ILista<Aeropuerto> listaDeAeropuertos;    
+    
+    private ILista<Vuelo> listaDeVuelos;    
     
     private ILista<Pasajero> listaDePasajeros;
     private ILista<PasajeroWrapper> listaDePasajerosWrapper;
@@ -107,9 +110,9 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno listarPasajerosPorCategoría(Categoria unaCategoria) {
-                ILista<Pasajero> aux = listaDePasajeroCategoriaESPORADICO;
-                String valorString = "";
-                String cat = unaCategoria.getTexto();
+        ILista<Pasajero> aux = listaDePasajeroCategoriaESPORADICO;
+        String valorString = "";
+        String cat = unaCategoria.getTexto();
         if(cat.equals("ESTANDAR")){
             aux = listaDePasajeroCategoriaESTANDAR;
         }else if(cat.equals("FRECUENTE")){
@@ -136,7 +139,8 @@ public class ImplementacionSistema implements Sistema {
         Aeropuerto aero = new Aeropuerto(codigo, nombre);
         if(listaDeAeropuertos.existeElemento(aero)){
         return Retorno.error2();
-        }        
+        }
+        listaDeAeropuertos.agregarFinal(aero);
         return Retorno.ok();
     }
 
@@ -159,12 +163,48 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno registrarVuelo(String codigoAeropuertoOrigen, String codigoAeropuertoDestino, String codigoDeVuelo, int capacidad, int costoEnDolares) {
-        return Retorno.noImplementada();
+        if(capacidad <= 0 || costoEnDolares <=0)
+        {
+            return Retorno.error1();
+        }
+        if(codigoAeropuertoOrigen == null || codigoAeropuertoOrigen.isEmpty() || codigoAeropuertoDestino == null || codigoAeropuertoDestino.isEmpty() || codigoDeVuelo == null || codigoDeVuelo.isEmpty())
+        {
+            return Retorno.error2();
+        }
+        Aeropuerto aero = new Aeropuerto(codigoAeropuertoOrigen);
+        Aeropuerto aero1 = new Aeropuerto(codigoAeropuertoDestino);
+        if (listaDeAeropuertos.existeElemento(aero)) {
+            return Retorno.error3();
+        }
+        if (listaDeAeropuertos.existeElemento(aero1)) {
+            return Retorno.error4();
+        }
+        Vuelo vuelo = new Vuelo(codigoAeropuertoOrigen, codigoAeropuertoDestino, codigoDeVuelo, capacidad,costoEnDolares);
+        
+        if(listaDeVuelos.existeElemento(vuelo)){
+        return Retorno.error5();
+        }
+        
+        listaDeVuelos.agregarFinal(vuelo);
+        return Retorno.ok();
     }
 
     @Override
     public Retorno obtenerInformacionDeVuelo(String codigoDeVuelo) {
-        return Retorno.noImplementada();
+        if(codigoDeVuelo == null || codigoDeVuelo.isEmpty())
+        {
+            return Retorno.error1();
+        }
+        
+        int total = this.listaDeVuelos.cantidadElementos();
+
+        for (int i = 0; i < total; i++) {
+            Vuelo vueloActual = this.listaDeVuelos.obtenerElemento(i);
+            if (vueloActual.getcodigoDeVuelo().equals(codigoDeVuelo)) {
+                return Retorno.ok(vueloActual.toString());
+            }
+        }
+        return Retorno.error2();
     }
     
     @Override

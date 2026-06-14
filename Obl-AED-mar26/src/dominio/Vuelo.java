@@ -6,8 +6,8 @@ import sistemaViajes.Estado;
  *
  * @author burio
  */
-public class Vuelo {
-   private String codigoAeropuestoOrigen;
+public class Vuelo implements Comparable<Vuelo>{
+   private String codigoAeropuertoOrigen;
    private String codigoAeropuertoDestino;
    private String codigoDeVuelo;
    private int capacidad;
@@ -16,8 +16,8 @@ public class Vuelo {
    private int cantidadDeReservas;
    private int cantidadDePasajerosConfirmados;
 
-    public Vuelo(String codigoAeropuestoOrigen, String codigoAeropuertoDestino, String codigoDeVuelo, int capacidad, int costoEnDolares) {
-        this.codigoAeropuestoOrigen = codigoAeropuestoOrigen;
+    public Vuelo(String codigoAeropuertoOrigen, String codigoAeropuertoDestino, String codigoDeVuelo, int capacidad, int costoEnDolares) {
+        this.codigoAeropuertoOrigen = codigoAeropuertoOrigen;
         this.codigoAeropuertoDestino = codigoAeropuertoDestino;
         this.codigoDeVuelo = codigoDeVuelo;
         this.capacidad = capacidad;
@@ -57,6 +57,32 @@ public class Vuelo {
     
     public int getcantidadDePasajerosConfirmados() {
         return this.cantidadDePasajerosConfirmados;
+    }
+    
+    
+    @Override
+    public String toString() {
+    return codigoAeropuertoOrigen + ";" + codigoAeropuertoDestino + ";" + codigoDeVuelo
+            + ";" + capacidad + ";" + costoEnDolares + ";" + estado + ";" + cantidadDeReservas
+            + ";" + cantidadDePasajerosConfirmados;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+    Vuelo other = (Vuelo) obj;
+    return this.codigoDeVuelo.equals(other.codigoDeVuelo);
+   
+    }
+    
+    @Override
+    public int compareTo(Vuelo o) {
+        return this.codigoDeVuelo.compareTo(o.codigoDeVuelo);
     }
    
 }

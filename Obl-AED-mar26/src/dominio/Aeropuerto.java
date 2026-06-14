@@ -24,6 +24,12 @@ public Aeropuerto(String codigo, String nombre) {
     this.viajesEnEspera = new Cola<>();
 }
 
+    public Aeropuerto(String codigo) {
+        this.codigo = codigo;
+    }
+
+
+
     public String getCodigo() {
         return codigo;
     }
