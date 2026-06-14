@@ -3,8 +3,13 @@ package sistemaViajes;
 //BRENDON BURIOL 331209, FERNANDO ARRIONDO 317501
 
 import dominio.Pasajero;
+import tads.ListaPasajeros;
+import tads.Lista;
+import tads.ILista;
 
 public class ImplementacionSistema implements Sistema {
+    
+    private Lista<Pasajero> listaDePasajeros;
 
     @Override
     public Retorno inicializarSistema() {
@@ -30,7 +35,7 @@ public class ImplementacionSistema implements Sistema {
         }
         Pasajero nuevo = new Pasajero(cedula, nombre, edad, categoria);
         
-        //nuevo.agr
+        listaDePasajeros.agregarInicio(nuevo);
         return Retorno.ok();
                 
     }
