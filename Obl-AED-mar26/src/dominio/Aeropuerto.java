@@ -44,7 +44,7 @@ public Aeropuerto(String codigo, String nombre) {
 
     @Override
     public String toString() {
-    return codigo + ";" + nombre + ";" + viajesEnEspera.size();
+    return codigo + ";" + nombre;
     }
     
     @Override

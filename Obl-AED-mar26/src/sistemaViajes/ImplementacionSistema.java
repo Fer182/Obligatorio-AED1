@@ -87,10 +87,10 @@ public class ImplementacionSistema implements Sistema {
         return Retorno.error1();
         }
         
-        int total = this.listaDePasajeros.cantidadElementos();
+        int total = listaDePasajeros.cantidadElementos();
 
         for (int i = 0; i < total; i++) {
-            Pasajero pasajeroActual = this.listaDePasajeros.obtenerElemento(i);
+            Pasajero pasajeroActual = listaDePasajeros.obtenerElemento(i);
             if (pasajeroActual.getCedula().equals(cedula)) {
                 return Retorno.ok(pasajeroActual.toString());
             }
@@ -102,15 +102,16 @@ public class ImplementacionSistema implements Sistema {
     public Retorno listarPasajerosAscendente() {
         String valorString = "";
         if(!listaDePasajeros.esVacia()){
-        for( int i = 0; i < listaDePasajeros.cantidadElementos()-1; i++){
+        for( int i = 0; i < listaDePasajeros.cantidadElementos() - 1; i++){
             Pasajero p = listaDePasajeros.obtenerElemento(i);
          valorString += p.toString() + "|";
 
         }
-        Pasajero ultimo = listaDePasajeros.obtenerElemento(listaDePasajeros.cantidadElementos()-1);
-       
+        int cant = listaDePasajeros.cantidadElementos()-1;
+        Pasajero ultimo = listaDePasajeros.obtenerElemento(cant);
         valorString += ultimo.toString();
-                }
+        }
+        
         return Retorno.ok(valorString);
     }
 
@@ -135,35 +136,44 @@ public class ImplementacionSistema implements Sistema {
     public Retorno listarPasajerosPorCategoría(Categoria unaCategoria) {
         ILista<Pasajero> aux = listaDePasajeroCategoriaESPORADICO;
         String valorString = "";
-        String cat = unaCategoria.getTexto();
-        if(cat.equals("ESTANDAR")){
+        
+        if(unaCategoria.equals(Categoria.ESTANDAR)){
             aux = listaDePasajeroCategoriaESTANDAR;
-        }else if(cat.equals("FRECUENTE")){
+        }else if(unaCategoria.equals(Categoria.FRECUENTE)){
             aux = listaDePasajeroCategoriaFRECUENTE;
-        }else if(cat.equals("PLATINO")){
+        }else if(unaCategoria.equals(Categoria.PLATINO)){
             aux = listaDePasajeroCategoriaPLATINO;
         }
-        
-        for( int i = 0; i < aux.cantidadElementos(); i++){
+        if(aux.esVacia()){
+            return Retorno.ok(valorString);
+        }
+        for( int i = 0; i < aux.cantidadElementos()-1; i++){
             Pasajero pCat = aux.obtenerElemento(i);
-         valorString += pCat.toString();
+         valorString += pCat.toString() + "|";
 
         }
+        Pasajero auxFinal = aux.obtenerElemento(aux.cantidadElementos()-1);
+        valorString += auxFinal.toString();
+
+        
+        
         return Retorno.ok(valorString);
     }
 
     @Override
     public Retorno registrarAeropuerto(String codigo, String nombre) {
-        if(codigo==null || codigo.isEmpty() || nombre == null || nombre.isEmpty())
+        if(codigo==null || codigo.trim().isEmpty() || nombre == null || nombre.trim().isEmpty())
         {
         return Retorno.error1();
         }
         
         Aeropuerto aero = new Aeropuerto(codigo, nombre);
-        if(listaDeAeropuertos.existeElemento(aero)){
+        if(listaDeAeropuertos.existeElemento(aero))
+        {
         return Retorno.error2();
         }
-        listaDeAeropuertos.agregarFinal(aero);
+        
+        listaDeAeropuertos.insertarOrdenado(aero);
         return Retorno.ok();
     }
 
@@ -178,6 +188,10 @@ public class ImplementacionSistema implements Sistema {
         for (int i = 0; i < total; i++) {
             Aeropuerto aeropuertoActual = this.listaDeAeropuertos.obtenerElemento(i);
             if (aeropuertoActual.getCodigo().equals(codigo)) {
+                if(aeropuertoActual.getViajesEnEspera().size() == 0){
+                return Retorno.ok(aeropuertoActual.toString());
+
+                }
                 return Retorno.ok(aeropuertoActual.toString(), aeropuertoActual.getViajesEnEspera().size());
             }
         }
@@ -196,19 +210,22 @@ public class ImplementacionSistema implements Sistema {
         }
         Aeropuerto aero = new Aeropuerto(codigoAeropuertoOrigen);
         Aeropuerto aero1 = new Aeropuerto(codigoAeropuertoDestino);
-        if (listaDeAeropuertos.existeElemento(aero)) {
+
+        if (!listaDeAeropuertos.existeElemento(aero)) {
             return Retorno.error3();
         }
-        if (listaDeAeropuertos.existeElemento(aero1)) {
+        
+        if (!listaDeAeropuertos.existeElemento(aero1)) {
             return Retorno.error4();
         }
+        
         Vuelo vuelo = new Vuelo(codigoAeropuertoOrigen, codigoAeropuertoDestino, codigoDeVuelo, capacidad,costoEnDolares);
         
         if(listaDeVuelos.existeElemento(vuelo)){
         return Retorno.error5();
         }
         
-        listaDeVuelos.agregarFinal(vuelo);
+        listaDeVuelos.insertarOrdenado(vuelo);
         return Retorno.ok();
     }
 
@@ -278,7 +295,7 @@ public Retorno abrirVuelo(String codigoDeVuelo) {
                 return Retorno.ok(vueloEst);
             }
 
-            vueloActual.setEstado(Estado.ABIERTO);
+            //vueloActual.setEstado(Estado.ABIERTO);
             return Retorno.ok();
         }
     }
