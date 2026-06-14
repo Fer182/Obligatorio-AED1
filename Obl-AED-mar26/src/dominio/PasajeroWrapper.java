@@ -15,6 +15,13 @@ public class PasajeroWrapper implements Comparable<PasajeroWrapper>{
     this.pasajero = p;
     }
     
+
+    @Override
+    public String toString() {
+    return pasajero.getCedula() + ";" + pasajero.getNombre() + ";" + pasajero.getEdad() + ";" + pasajero.getCategoria();
+    
+    }
+    
     @Override
     public int compareTo(PasajeroWrapper pw) {
         

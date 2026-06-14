@@ -2,16 +2,22 @@ package sistemaViajes;
 
 //BRENDON BURIOL 331209, FERNANDO ARRIONDO 317501
 
+import dominio.Aeropuerto;
 import dominio.Pasajero;
 import dominio.PasajeroWrapper;
 import tads.ILista;
 
 public class ImplementacionSistema implements Sistema {
     
+    private ILista<Aeropuerto> listaDeAeropuertos;    
+    
     private ILista<Pasajero> listaDePasajeros;
-
     private ILista<PasajeroWrapper> listaDePasajerosWrapper;
     
+    private ILista<Pasajero> listaDePasajeroCategoriaESPORADICO;
+    private ILista<Pasajero> listaDePasajeroCategoriaESTANDAR;
+    private ILista<Pasajero> listaDePasajeroCategoriaFRECUENTE;
+    private ILista<Pasajero> listaDePasajeroCategoriaPLATINO;
 
     @Override
     public Retorno inicializarSistema() {
@@ -31,13 +37,28 @@ public class ImplementacionSistema implements Sistema {
         {
             return Retorno.error3();
         }
-        if(cedula.equals(cedula))
+        
+        Pasajero p = new Pasajero(cedula, nombre, edad, categoria);
+        PasajeroWrapper pw = new PasajeroWrapper(p);
+                
+        if(listaDePasajeros.existeElemento(p))
         {
         return Retorno.error4();
         }
-        Pasajero p = new Pasajero(cedula, nombre, edad, categoria);
-        PasajeroWrapper pw = new PasajeroWrapper(p);
-
+        
+        if(p.getCategoria() == Categoria.ESPORADICO){
+        listaDePasajeroCategoriaESPORADICO.insertarOrdenado(p);
+        }
+        if(p.getCategoria() == Categoria.ESTANDAR){
+        listaDePasajeroCategoriaESTANDAR.insertarOrdenado(p);
+        }
+        if(p.getCategoria() == Categoria.FRECUENTE){
+        listaDePasajeroCategoriaFRECUENTE.insertarOrdenado(p);
+        }
+        if(p.getCategoria() == Categoria.PLATINO){
+        listaDePasajeroCategoriaPLATINO.insertarOrdenado(p);
+        }
+        
         listaDePasajeros.insertarOrdenado(p);
         listaDePasajerosWrapper.insertarOrdenado(pw);
         return Retorno.ok();
@@ -86,17 +107,54 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno listarPasajerosPorCategoría(Categoria unaCategoria) {
-        return Retorno.noImplementada();
+                ILista<Pasajero> aux = listaDePasajeroCategoriaESPORADICO;
+                String valorString = "";
+                String cat = unaCategoria.getTexto();
+        if(cat.equals("ESTANDAR")){
+            aux = listaDePasajeroCategoriaESTANDAR;
+        }else if(cat.equals("FRECUENTE")){
+            aux = listaDePasajeroCategoriaFRECUENTE;
+        }else if(cat.equals("PLATINO")){
+            aux = listaDePasajeroCategoriaPLATINO;
+        }
+        
+        for( int i = 0; i < aux.cantidadElementos(); i++){
+            Pasajero pCat = aux.obtenerElemento(i);
+         valorString += pCat.toString();
+
+        }
+        return Retorno.ok(valorString);
     }
 
     @Override
     public Retorno registrarAeropuerto(String codigo, String nombre) {
-        return Retorno.noImplementada();
+        if(codigo==null || codigo.isEmpty() || nombre == null || nombre.isEmpty())
+        {
+        return Retorno.error1();
+        }
+        
+        Aeropuerto aero = new Aeropuerto(codigo, nombre);
+        if(listaDeAeropuertos.existeElemento(aero)){
+        return Retorno.error2();
+        }        
+        return Retorno.ok();
     }
 
     @Override
     public Retorno obtenerAeropuerto(String codigo) {
-        return Retorno.noImplementada();
+        if(codigo==null || codigo.isEmpty())
+        {
+        return Retorno.error1();
+        }
+        int total = this.listaDeAeropuertos.cantidadElementos();
+
+        for (int i = 0; i < total; i++) {
+            Aeropuerto aeropuertoActual = this.listaDeAeropuertos.obtenerElemento(i);
+            if (aeropuertoActual.getCodigo().equals(codigo)) {
+                return Retorno.ok(aeropuertoActual.toString(), aeropuertoActual.getViajesEnEspera().size());
+            }
+        }
+        return Retorno.error2();
     }
 
     @Override
