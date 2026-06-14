@@ -19,10 +19,11 @@ public class ListaPasajeros {
     }
 
     public void registrarPasajero(Pasajero pasajero) {
-
-    }
-    
-    public Pasajero buscarPasajero (String cedula) {
+        listaDePasajeros.agregarInicio(pasajero);
         
     }
+    
+    //public Pasajero buscarPasajero (String cedula) {
+        //listaDePasajeros.obtenerElemento(pasajero);
+    //}
 }
