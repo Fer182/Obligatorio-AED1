@@ -4,13 +4,12 @@ package sistemaViajes;
 
 import dominio.Pasajero;
 import dominio.PasajeroWrapper;
-import tads.ListaPasajeros;
-import tads.Lista;
 import tads.ILista;
 
 public class ImplementacionSistema implements Sistema {
     
     private ILista<Pasajero> listaDePasajeros;
+
     private ILista<PasajeroWrapper> listaDePasajerosWrapper;
     
 
@@ -47,7 +46,20 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno buscarPasajero(String cedula) {
-        return Retorno.noImplementada();
+        
+        if (!cedula.matches("(\\d\\.\\d{3}\\.\\d{3}-\\d)|(\\d{3}\\.\\d{3}-\\d)")) {
+        return Retorno.error1();
+        }
+        
+        int total = this.listaDePasajeros.cantidadElementos();
+
+        for (int i = 0; i < total; i++) {
+            Pasajero pasajeroActual = this.listaDePasajeros.obtenerElemento(i);
+            if (pasajeroActual.getCedula().equals(cedula)) {
+                return Retorno.ok(pasajeroActual.toString());
+            }
+        }
+        return Retorno.error2();
     }
 
     @Override
