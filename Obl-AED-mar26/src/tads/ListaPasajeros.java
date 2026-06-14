@@ -22,7 +22,15 @@ public class ListaPasajeros {
 
     }
     
-    public Pasajero buscarPasajero (String cedula) {
-        
+    public String buscarPasajero (String cedula) {
+        int total = this.listaDePasajeros.cantidadElementos();
+
+        for (int i = 0; i < total; i++) {
+            Pasajero pasajeroActual = this.listaDePasajeros.obtenerElemento(i);
+            if (pasajeroActual.getCedula().equals(cedula)) {
+                return pasajeroActual.toString();
+            }
+        }
+        return "No se encontro pasajero";
     }
 }
