@@ -41,13 +41,7 @@ public class Pasajero implements Comparable<Pasajero> {
     
     @Override
     public String toString() {
-<<<<<<< HEAD
     return cedula + ";" + nombre + ";" + edad + ";" + categoria.getTexto();
-=======
-        
-    return cedula + ";" + nombre + ";" + edad + ";" + categoria;
->>>>>>> 5b58a84d4adef261291e836fe798a462c9f4b443
-    
     }
     
     @Override
