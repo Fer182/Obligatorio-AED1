@@ -3,13 +3,12 @@ package sistemaViajes;
 //BRENDON BURIOL 331209, FERNANDO ARRIONDO 317501
 
 import dominio.Pasajero;
-import tads.ListaPasajeros;
 import tads.Lista;
 import tads.ILista;
 
 public class ImplementacionSistema implements Sistema {
     
-    private Lista<Pasajero> listaDePasajeros;
+    private ILista<Pasajero> listaDePasajeros;
 
     @Override
     public Retorno inicializarSistema() {
