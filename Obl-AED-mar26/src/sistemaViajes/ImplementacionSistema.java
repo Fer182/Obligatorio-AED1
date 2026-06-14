@@ -7,6 +7,7 @@ import dominio.Pasajero;
 import dominio.PasajeroWrapper;
 import dominio.Vuelo;
 import tads.ILista;
+import tads.Lista;
 
 public class ImplementacionSistema implements Sistema {
     
@@ -24,16 +25,27 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno inicializarSistema() {
-        return Retorno.noImplementada();
+    listaDeAeropuertos = new Lista<>();
+    listaDeVuelos = new Lista<>();
+
+    listaDePasajeros = new Lista<>();
+    listaDePasajerosWrapper = new Lista<>();
+
+    listaDePasajeroCategoriaESPORADICO = new Lista<>();
+    listaDePasajeroCategoriaESTANDAR = new Lista<>();
+    listaDePasajeroCategoriaFRECUENTE = new Lista<>();
+    listaDePasajeroCategoriaPLATINO = new Lista<>();
+
+    return Retorno.ok();
     }
 
     @Override 
     public Retorno registrarPasajero(String cedula, String nombre, int edad, Categoria categoria) {
-        if(cedula==null || cedula.isEmpty() || nombre == null || nombre.isEmpty() || categoria == null)
+        if(cedula==null || cedula.trim().isEmpty() || nombre == null || nombre.trim().isEmpty() || categoria == null)
         {
         return Retorno.error1();
         }
-        if (!cedula.matches("(\\d\\.\\d{3}\\.\\d{3}-\\d)|(\\d{3}\\.\\d{3}-\\d)")) {
+        if (!cedula.matches("([1-9]\\.\\d{3}\\.\\d{3}-\\d)|([1-9]\\d{2}\\.\\d{3}-\\d)")) {
         return Retorno.error2();
         }
         if(edad < 0)
@@ -71,7 +83,7 @@ public class ImplementacionSistema implements Sistema {
     @Override
     public Retorno buscarPasajero(String cedula) {
         
-        if (!cedula.matches("(\\d\\.\\d{3}\\.\\d{3}-\\d)|(\\d{3}\\.\\d{3}-\\d)")) {
+        if (!cedula.matches("([1-9]\\.\\d{3}\\.\\d{3}-\\d)|([1-9]\\d{2}\\.\\d{3}-\\d)")) {
         return Retorno.error1();
         }
         
@@ -207,10 +219,30 @@ public class ImplementacionSistema implements Sistema {
         return Retorno.error2();
     }
     
-    @Override
-    public Retorno abrirVuelo(String codigoDeVuelo) {
-        return Retorno.noImplementada();
+@Override
+public Retorno abrirVuelo(String codigoDeVuelo) {
+
+    if (codigoDeVuelo == null || codigoDeVuelo.trim().isEmpty()) {
+        return Retorno.error1();
     }
+
+    int total = listaDeVuelos.cantidadElementos();
+    for (int i = 0; i < total; i++) {
+        Vuelo vueloActual = listaDeVuelos.obtenerElemento(i);
+        String vueloEst = vueloActual.getEstado();
+        if (vueloActual.getcodigoDeVuelo().equals(codigoDeVuelo)) {
+
+            if (vueloEst.equals("PROGRAMADO")) {
+                return Retorno.error3();
+            }
+
+            vueloActual.setEstado(Estado.ABIERTO);
+            return Retorno.ok();
+        }
+    }
+
+    return Retorno.error2();
+}
 
     @Override
     public Retorno cerrarVuelo(String codigoDeVuelo) {
