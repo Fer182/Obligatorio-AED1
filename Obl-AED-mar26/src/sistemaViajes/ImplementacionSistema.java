@@ -3,13 +3,16 @@ package sistemaViajes;
 //BRENDON BURIOL 331209, FERNANDO ARRIONDO 317501
 
 import dominio.Pasajero;
+import dominio.PasajeroWrapper;
 import tads.ListaPasajeros;
 import tads.Lista;
 import tads.ILista;
 
 public class ImplementacionSistema implements Sistema {
     
-    private Lista<Pasajero> listaDePasajeros;
+    private ILista<Pasajero> listaDePasajeros;
+    private ILista<PasajeroWrapper> listaDePasajerosWrapper;
+    
 
     @Override
     public Retorno inicializarSistema() {
@@ -33,9 +36,11 @@ public class ImplementacionSistema implements Sistema {
         {
         return Retorno.error4();
         }
-        Pasajero nuevo = new Pasajero(cedula, nombre, edad, categoria);
-        
-        listaDePasajeros.agregarInicio(nuevo);
+        Pasajero p = new Pasajero(cedula, nombre, edad, categoria);
+        PasajeroWrapper pw = new PasajeroWrapper(p);
+
+        listaDePasajeros.insertarOrdenado(p);
+        listaDePasajerosWrapper.insertarOrdenado(pw);
         return Retorno.ok();
                 
     }
@@ -47,12 +52,24 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno listarPasajerosAscendente() {
-        return Retorno.noImplementada();
+        String valorString = "";
+        for( int i = 0; i < listaDePasajeros.cantidadElementos(); i++){
+            Pasajero p = listaDePasajeros.obtenerElemento(i);
+         valorString += p.toString();
+
+        }
+        return Retorno.ok(valorString);
     }
 
     @Override
     public Retorno listarPasajerosDescendente() {
-        return Retorno.noImplementada();
+                String valorString = "";
+        for( int i = 0; i < listaDePasajerosWrapper.cantidadElementos(); i++){
+            PasajeroWrapper pw = listaDePasajerosWrapper.obtenerElemento(i);
+         valorString += pw.toString();
+
+        }
+        return Retorno.ok(valorString);
     }
 
     @Override

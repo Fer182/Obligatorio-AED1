@@ -60,7 +60,13 @@ public class Pasajero implements Comparable<Pasajero> {
 
     @Override
     public int compareTo(Pasajero p) {
-        return this.cedula.compareTo(p.cedula);
+        
+        String c1 = this.cedula.replace(".","").replace("-","");
+        String c2 = p.cedula.replace(".","").replace("-","");
+        Integer c1Numerico = Integer.parseInt(c1);
+        Integer c2Numerico = Integer.parseInt(c2);
+        
+        return c1Numerico - c2Numerico;
     }
     
 }

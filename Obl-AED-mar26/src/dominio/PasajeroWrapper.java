@@ -8,13 +8,21 @@ package dominio;
  *
  * @author FERAR
  */
-public class PasajeroWrapper {
-    private Pasajero pasajero;
+public class PasajeroWrapper implements Comparable<PasajeroWrapper>{
+    private final Pasajero pasajero;
     
     public PasajeroWrapper(Pasajero p){
     this.pasajero = p;
     }
     
     @Override
-    public 
+    public int compareTo(PasajeroWrapper pw) {
+        
+        String c1 = this.pasajero.getCedula().replace(".","").replace("-","");
+        String c2 = pw.pasajero.getCedula().replace(".","").replace("-","");
+        Integer c1Numerico = Integer.parseInt(c1);
+        Integer c2Numerico = Integer.parseInt(c2);
+
+        return c2Numerico - c1Numerico;
+    }
 }
