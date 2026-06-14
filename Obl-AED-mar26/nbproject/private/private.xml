@@ -3,11 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/burio/Desktop/Obligatorio-AED1/Obl-AED-mar26/src/tads/ListaPasajeros.java</file>
             <file>file:/C:/Users/burio/Desktop/Obligatorio-AED1/Obl-AED-mar26/src/dominio/Pasajero.java</file>
             <file>file:/C:/Users/burio/Desktop/Obligatorio-AED1/Obl-AED-mar26/src/dominio/Reserva.java</file>
             <file>file:/C:/Users/burio/Desktop/Obligatorio-AED1/Obl-AED-mar26/src/tads/Lista.java</file>
             <file>file:/C:/Users/burio/Desktop/Obligatorio-AED1/Obl-AED-mar26/src/sistemaViajes/ImplementacionSistema.java</file>
+            <file>file:/C:/Users/burio/Desktop/Obligatorio-AED1/Obl-AED-mar26/src/sistemaViajes/Retorno.java</file>
+            <file>file:/C:/Users/burio/Desktop/Obligatorio-AED1/Obl-AED-mar26/src/dominio/PasajeroWrapper.java</file>
         </group>
     </open-files>
 </project-private>
