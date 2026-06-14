@@ -232,7 +232,7 @@ public Retorno abrirVuelo(String codigoDeVuelo) {
         String vueloEst = vueloActual.getEstado();
         if (vueloActual.getcodigoDeVuelo().equals(codigoDeVuelo)) {
 
-            if (vueloEst.equals("PROGRAMADO")) {
+            if (!vueloEst.equals("PROGRAMADO")) {
                 return Retorno.error3();
             }
 
@@ -246,12 +246,40 @@ public Retorno abrirVuelo(String codigoDeVuelo) {
 
     @Override
     public Retorno cerrarVuelo(String codigoDeVuelo) {
-        return Retorno.noImplementada();
+        
+    if (codigoDeVuelo == null || codigoDeVuelo.trim().isEmpty()) {
+        return Retorno.error1();
+    }
+    int total = listaDeVuelos.cantidadElementos();
+    
+    for (int i = 0; i < total; i++) {
+        
+        Vuelo vueloActual = listaDeVuelos.obtenerElemento(i);
+        Aeropuerto aeroActual = listaDeAeropuertos.obtenerElemento(i);
+    
+        String vueloEst = vueloActual.getEstado();
+        
+        if (vueloActual.getcodigoDeVuelo().equals(codigoDeVuelo)) {
+
+            if (vueloEst.equals("ABIERTO")) {
+                aeroActual.getViajesEnEspera().enqueue(vueloActual);
+                vueloActual.
+                return Retorno.ok(vueloEst);
+            }
+
+            vueloActual.setEstado(Estado.ABIERTO);
+            return Retorno.ok();
+        }
+    }
+
+    return Retorno.error2();
     }
 
     @Override
     public Retorno realizarReserva(String codigoDeVuelo, String cedula) {
+
         return Retorno.noImplementada();
+
     }
 
     @Override
