@@ -122,7 +122,7 @@ public class Lista<T extends Comparable<T>> implements ILista<T> {
         if (inicio == null) {
             inicio = new Nodo(elem);
         } else if (inicio.dato.compareTo(elem) > 0) {
-            inicio = new Nodo(elem);
+            inicio = new Nodo(elem, inicio);
         } else {
             Nodo<T> aux = inicio;
             while (aux.sig != null && aux.sig.dato.compareTo(elem) < 0) {
