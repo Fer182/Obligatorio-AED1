@@ -19,7 +19,7 @@ public class ListaPasajeros {
     }
 
     public void registrarPasajero(Pasajero pasajero) {
-
+        listaDePasajeros.agregarInicio(pasajero);
     }
     
     public String buscarPasajero (String cedula) {
@@ -33,4 +33,8 @@ public class ListaPasajeros {
         }
         return "No se encontro pasajero";
     }
+    
+    //public Pasajero buscarPasajero (String cedula) {
+        //listaDePasajeros.obtenerElemento(pasajero);
+    //}
 }
