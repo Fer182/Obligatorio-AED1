@@ -36,6 +36,10 @@ public class Vuelo implements Comparable<Vuelo>{
     public int getCostoEnDolares() {
         return this.costoEnDolares;
     }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
     
     public String getEstado() {
         if(null != this.estado) switch (this.estado) {

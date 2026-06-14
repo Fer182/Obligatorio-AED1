@@ -101,22 +101,33 @@ public class ImplementacionSistema implements Sistema {
     @Override
     public Retorno listarPasajerosAscendente() {
         String valorString = "";
-        for( int i = 0; i < listaDePasajeros.cantidadElementos(); i++){
+        if(!listaDePasajeros.esVacia()){
+        for( int i = 0; i < listaDePasajeros.cantidadElementos()-1; i++){
             Pasajero p = listaDePasajeros.obtenerElemento(i);
-         valorString += p.toString();
+         valorString += p.toString() + "|";
 
         }
+        Pasajero ultimo = listaDePasajeros.obtenerElemento(listaDePasajeros.cantidadElementos()-1);
+       
+        valorString += ultimo.toString();
+                }
         return Retorno.ok(valorString);
     }
 
     @Override
     public Retorno listarPasajerosDescendente() {
                 String valorString = "";
-        for( int i = 0; i < listaDePasajerosWrapper.cantidadElementos(); i++){
+        if(!listaDePasajerosWrapper.esVacia()){
+        for( int i = 0; i < listaDePasajerosWrapper.cantidadElementos() - 1; i++){
             PasajeroWrapper pw = listaDePasajerosWrapper.obtenerElemento(i);
-         valorString += pw.toString();
+         valorString += pw.toString() + "|";
 
         }
+        
+        PasajeroWrapper ultimoWrapper = listaDePasajerosWrapper.obtenerElemento(listaDePasajerosWrapper.cantidadElementos()-1);
+        valorString += ultimoWrapper.toString();
+        }
+        
         return Retorno.ok(valorString);
     }
 
