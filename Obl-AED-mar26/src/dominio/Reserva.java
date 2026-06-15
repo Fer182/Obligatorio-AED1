@@ -4,6 +4,8 @@
  */
 package dominio;
 
+import sistemaViajes.EstadoReserva;
+
 /**
  *
  * @author burio
@@ -11,10 +13,16 @@ package dominio;
 public class Reserva {
     private String codigoDeVuelo;
     private String cedula;
+    private EstadoReserva estado;
 
     public Reserva(String codigoDeVuelo, String cedula) {
         this.codigoDeVuelo = codigoDeVuelo;
         this.cedula = cedula;
+        this.estado = estado.RESERVA;
+    }
+
+    public EstadoReserva getEstado() {
+        return estado;
     }
     
     public String getcodigoDeVuelo () {

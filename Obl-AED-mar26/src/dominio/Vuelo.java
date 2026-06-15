@@ -1,6 +1,9 @@
 package dominio;
 
 import sistemaViajes.Estado;
+import sistemaViajes.EstadoReserva;
+import sistemaViajes.Retorno;
+import tads.ILista;
 
 /**
  *
@@ -15,6 +18,8 @@ public class Vuelo implements Comparable<Vuelo>{
    private Estado estado;
    private int cantidadDeReservas;
    private int cantidadDePasajerosConfirmados;
+   private ILista<Reserva> reservas;
+   private ILista<Pasajero> pasajeros;
 
     public Vuelo(String codigoAeropuertoOrigen, String codigoAeropuertoDestino, String codigoDeVuelo, int capacidad, int costoEnDolares) {
         this.codigoAeropuertoOrigen = codigoAeropuertoOrigen;
@@ -23,6 +28,10 @@ public class Vuelo implements Comparable<Vuelo>{
         this.capacidad = capacidad;
         this.costoEnDolares = costoEnDolares;
         this.estado = estado.PROGRAMADO;
+    }
+
+    public Vuelo(String codigoDeVuelo) {
+        this.codigoDeVuelo = codigoDeVuelo;
     }
     
     public String getcodigoDeVuelo () {
@@ -55,12 +64,59 @@ public class Vuelo implements Comparable<Vuelo>{
         return "FINALIZADO";
     }
     
-    public int getcantidadDeReservas () {
-        return this.cantidadDeReservas;
+    
+    public int getcantidadDeReservasTotales () {
+        return this.reservas.cantidadElementos();
+    }
+    
+    public Pasajero getPasajeroPorCedula (String cedula) {
+        int total = this.pasajeros.cantidadElementos();
+        
+        for (int i = 0; i < total; i++) {
+        Pasajero pasajero = this.pasajeros.obtenerElemento(i);
+            if (pasajero.getCedula().equals(cedula)) {
+                return pasajero;
+            }
+        }
+        return null;
+    }
+    
+    public String getPasajerosConfirmados() {
+        int total = this.reservas.cantidadElementos();
+        String pasajeros = "";
+
+        for (int i = 0; i < total; i++) {
+            Reserva reserva = this.reservas.obtenerElemento(i);
+            if (reserva.getEstado().equals(EstadoReserva.CHECKIN)) {
+                Pasajero pasajero = this.getPasajeroPorCedula(reserva.getcedula());
+                pasajeros += pasajero.toString();
+            }
+        }
+        return pasajeros;
+    }
+    
+    public int getcantidadDeReservasSinConfirmar() {
+        int total = this.reservas.cantidadElementos();
+        int sinConfirmar = 0;
+        for (int i = 0; i < total; i++) {
+            Reserva reserva = this.reservas.obtenerElemento(i);
+            if (reserva.getEstado().equals(EstadoReserva.RESERVA)) {
+                sinConfirmar ++;
+            }
+        }
+        return sinConfirmar;
     }
     
     public int getcantidadDePasajerosConfirmados() {
-        return this.cantidadDePasajerosConfirmados;
+        int total = this.reservas.cantidadElementos();
+        int confirmados = 0;
+        for (int i = 0; i < total; i++) {
+            Reserva reserva = this.reservas.obtenerElemento(i);
+            if (reserva.getEstado().equals(EstadoReserva.CHECKIN)) {
+                confirmados ++;
+            }
+        }
+        return confirmados;
     }
     
     
