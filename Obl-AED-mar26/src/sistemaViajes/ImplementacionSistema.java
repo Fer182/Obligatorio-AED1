@@ -268,39 +268,38 @@ public Retorno abrirVuelo(String codigoDeVuelo) {
             return Retorno.ok();
         }
     }
-
     return Retorno.error2();
 }
 
     @Override
     public Retorno cerrarVuelo(String codigoDeVuelo) {
         
-    if (codigoDeVuelo == null || codigoDeVuelo.trim().isEmpty()) {
-        return Retorno.error1();
-    }
-    int total = listaDeVuelos.cantidadElementos();
-    
-    for (int i = 0; i < total; i++) {
-        
-        Vuelo vueloActual = listaDeVuelos.obtenerElemento(i);
-        Aeropuerto aeroActual = listaDeAeropuertos.obtenerElemento(i);
-    
-        String vueloEst = vueloActual.getEstado();
-        
-        if (vueloActual.getcodigoDeVuelo().equals(codigoDeVuelo)) {
-
-            if (vueloEst.equals("ABIERTO")) {
-                aeroActual.getViajesEnEspera().enqueue(vueloActual);
-                vueloActual.
-                return Retorno.ok(vueloEst);
-            }
-
-            //vueloActual.setEstado(Estado.ABIERTO);
-            return Retorno.ok();
+        if (codigoDeVuelo == null || codigoDeVuelo.trim().isEmpty()) {
+            return Retorno.error1();
         }
-    }
 
-    return Retorno.error2();
+        Vuelo vuelo = new Vuelo(codigoDeVuelo);
+
+        if(!listaDeVuelos.existeElemento(vuelo)){
+            return Retorno.error2();
+        }
+        int total = listaDeVuelos.cantidadElementos();
+
+        for (int i = 0; i < total; i++) {
+            Vuelo vueloActual = listaDeVuelos.obtenerElemento(i);
+            Aeropuerto aeroActual = listaDeAeropuertos.obtenerElemento(i);
+
+            String vueloEst = vueloActual.getEstado();
+
+            if (vueloActual.getcodigoDeVuelo().equals(codigoDeVuelo)) {
+                if (vueloEst.equals("ABIERTO")) {
+                    aeroActual.getViajesEnEspera().enqueue(vueloActual);
+                    vueloActual.setEstado(Estado.CERRADO);
+                    return Retorno.ok(vueloActual.getPasajerosConfirmados(), vueloActual.getcantidadDeReservasSinConfirmar());
+                }
+            }
+        }
+        return Retorno.error3();
     }
 
     @Override

@@ -48,15 +48,15 @@ public class Pasajero implements Comparable<Pasajero> {
     
     @Override
     public boolean equals(Object obj) {
-    if (this == obj) {
-        return true;
-    }
-    if (obj == null || getClass() != obj.getClass()) {
-        return false;
-    }
-    Pasajero other = (Pasajero) obj;
-    return this.cedula.equals(other.cedula);
-   
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Pasajero other = (Pasajero) obj;
+        return this.cedula.equals(other.cedula);
+  
     }
 
     @Override
