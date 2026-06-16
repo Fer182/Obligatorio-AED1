@@ -23,6 +23,10 @@ public class Pasajero implements Comparable<Pasajero> {
         this.categoria = categoria;
     }
 
+    public Pasajero(String cedula) {
+        this.cedula = cedula;
+    }
+    
     public String getCedula() {
         return cedula;
     }

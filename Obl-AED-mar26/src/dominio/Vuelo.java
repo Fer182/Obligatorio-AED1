@@ -4,6 +4,7 @@ import sistemaViajes.Estado;
 import sistemaViajes.EstadoReserva;
 import sistemaViajes.Retorno;
 import tads.ILista;
+import tads.Lista;
 
 /**
  *
@@ -28,8 +29,18 @@ public class Vuelo implements Comparable<Vuelo>{
         this.capacidad = capacidad;
         this.costoEnDolares = costoEnDolares;
         this.estado = estado.PROGRAMADO;
+        this.pasajeros = new Lista<>();
+        this.reservas = new Lista<>();
     }
 
+    
+    public boolean getSuperoElOverbooking () {
+        if (cantidadDeReservas > capacidad*1.10) {
+            return true;
+        }
+        return false;
+    }
+    
     public Vuelo(String codigoDeVuelo) {
         this.codigoDeVuelo = codigoDeVuelo;
     }

@@ -5,11 +5,14 @@ package sistemaViajes;
 import dominio.Aeropuerto;
 import dominio.Pasajero;
 import dominio.PasajeroWrapper;
+import dominio.Reserva;
 import dominio.Vuelo;
 import tads.ILista;
 import tads.Lista;
 
 public class ImplementacionSistema implements Sistema {
+    
+    private ILista<Reserva> reservas;
     
     private ILista<Aeropuerto> listaDeAeropuertos;    
     
@@ -27,7 +30,9 @@ public class ImplementacionSistema implements Sistema {
     public Retorno inicializarSistema() {
     listaDeAeropuertos = new Lista<>();
     listaDeVuelos = new Lista<>();
-
+    
+    reservas = new Lista<>();
+    
     listaDePasajeros = new Lista<>();
     listaDePasajerosWrapper = new Lista<>();
 
@@ -304,9 +309,46 @@ public Retorno abrirVuelo(String codigoDeVuelo) {
 
     @Override
     public Retorno realizarReserva(String codigoDeVuelo, String cedula) {
+        if(codigoDeVuelo == null || codigoDeVuelo.trim().isEmpty() || cedula == null || cedula.trim().isEmpty())
+        {
+            return Retorno.error1();
+        }
+        
+        if (!cedula.matches("([1-9]\\.\\d{3}\\.\\d{3}-\\d)|([1-9]\\d{2}\\.\\d{3}-\\d)")) {
+            return Retorno.error2();
+        }
+        
+        Vuelo vuelo = new Vuelo(codigoDeVuelo);
+        if (!this.listaDeVuelos.existeElemento(vuelo)){
+            return Retorno.error3();
+        }
+        
+        Pasajero pasajero = new Pasajero(cedula);
+        if (!this.listaDePasajeros.existeElemento(pasajero)){
+            return Retorno.error4();
+        }
+        
+        int total = listaDeVuelos.cantidadElementos();
 
-        return Retorno.noImplementada();
+        for (int i = 0; i < total; i++) {
+            Vuelo vueloActual = listaDeVuelos.obtenerElemento(i);
+            String vueloEst = vueloActual.getEstado();
 
+            if (!(vueloEst.equals("PROGRAMADO")) &&  !(vueloEst.equals("ABIERTO"))) {
+                return Retorno.error5();
+            }
+            if(vueloActual.getSuperoElOverbooking()) {
+                return Retorno.error7();
+            }
+        }
+        
+        Reserva reserva = new Reserva(codigoDeVuelo,cedula);
+        if (this.reservas.existeElemento(reserva)) {
+            return Retorno.error6();
+        }
+       
+        this.reservas.insertarOrdenado(reserva);
+        return Retorno.ok();
     }
 
     @Override

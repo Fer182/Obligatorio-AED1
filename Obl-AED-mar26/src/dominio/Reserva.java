@@ -10,7 +10,7 @@ import sistemaViajes.EstadoReserva;
  *
  * @author burio
  */
-public class Reserva {
+public class Reserva implements Comparable<Reserva>{
     private String codigoDeVuelo;
     private String cedula;
     private EstadoReserva estado;
@@ -20,6 +20,11 @@ public class Reserva {
         this.cedula = cedula;
         this.estado = estado.RESERVA;
     }
+
+    public Reserva(String cedula) {
+        this.cedula = cedula;
+    }
+    
 
     public EstadoReserva getEstado() {
         return estado;
@@ -31,5 +36,15 @@ public class Reserva {
         
     public String getcedula () {
         return this.cedula;
+    }
+
+    @Override
+    public int compareTo(Reserva r) {
+        String c1 = this.cedula.replace(".","").replace("-","");
+        String c2 = r.cedula.replace(".","").replace("-","");
+        Integer c1Numerico = Integer.parseInt(c1);
+        Integer c2Numerico = Integer.parseInt(c2);
+        
+        return c1Numerico - c2Numerico;
     }
 }
