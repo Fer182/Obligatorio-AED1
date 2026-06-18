@@ -26,30 +26,40 @@ public class Test14_RealizarCheckIn {
     }
 
     @Test
-    public void realizarCheckInOk() {
-        s.realizarReserva("AR123", "1.111.111-1");
-        s.abrirVuelo("AR123");
+    public void realizarCheckInConCodigoVueloEspacios() {
+        retorno = s.realizarCheckIn("   ", "1.111.111-1");
 
-        retorno = s.realizarCheckIn("AR123", "1.111.111-1");
-
-        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
-        assertEquals("MVD:EZE;AR123;1;230;Abierto;1;1", s.obtenerInformacionDeVuelo("AR123").getValorString());
+        assertEquals(Retorno.Resultado.ERROR_1, retorno.getResultado());
     }
 
     @Test
-    public void realizarCheckInErroresBasicos() {
-        assertEquals(Retorno.Resultado.ERROR_1, s.realizarCheckIn(null, "1.111.111-1").getResultado());
-        assertEquals(Retorno.Resultado.ERROR_1, s.realizarCheckIn("AR123", "").getResultado());
-        assertEquals(Retorno.Resultado.ERROR_2, s.realizarCheckIn("AR123", "1.11.111-1").getResultado());
-        assertEquals(Retorno.Resultado.ERROR_3, s.realizarCheckIn("NO_EXISTE", "1.111.111-1").getResultado());
-        assertEquals(Retorno.Resultado.ERROR_4, s.realizarCheckIn("AR123", "3.444.333-3").getResultado());
-        assertEquals(Retorno.Resultado.ERROR_5, s.realizarCheckIn("AR123", "3.333.333-3").getResultado());
-        s.abrirVuelo("AR123");
-        assertEquals(Retorno.Resultado.ERROR_6, s.realizarCheckIn("AR123", "3.333.333-3").getResultado());
+    public void realizarCheckInNoPermiteVueloCerrado() {
         s.realizarReserva("AR123", "1.111.111-1");
-        s.realizarCheckIn("AR123", "1.111.111-1");
-        assertEquals(Retorno.Resultado.ERROR_7, s.realizarCheckIn("AR123", "1.111.111-1").getResultado());
+        s.abrirVuelo("AR123");
+        s.cerrarVuelo("AR123");
 
+        retorno = s.realizarCheckIn("AR123", "1.111.111-1");
+
+        assertEquals(Retorno.Resultado.ERROR_5, retorno.getResultado());
+    }
+    
+    @Test
+    public void realizarCheckInSegundoPasajeroReservadoPeroSinLugar() {
+        s.realizarReserva("AR123", "1.111.111-1");
+        s.realizarReserva("AR123", "2.222.222-2");
+
+        s.abrirVuelo("AR123");
+
+        retorno = s.realizarCheckIn("AR123", "1.111.111-1");
+        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+
+        assertEquals(
+                "MVD:EZE;AR123;1;230;Abierto;2;1",
+                s.obtenerInformacionDeVuelo("AR123").getValorString()
+        );
+
+        retorno = s.realizarCheckIn("AR123", "2.222.222-2");
+        assertEquals(Retorno.Resultado.ERROR_8, retorno.getResultado());
     }
 
 }

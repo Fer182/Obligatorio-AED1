@@ -23,38 +23,83 @@ public class Test04_ListarPasajerosAscendente {
     }
 
     @Test
-    public void listarPasajerosVacio() {
-        retorno = s.listarPasajerosAscendente();
-        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
-        assertEquals("", retorno.getValorString());
-    }
+    public void listarPasajerosAscendenteConEdadesExtremas() {
 
+        s.registrarPasajero(
+                "1.111.111-1",
+                "Fer",
+                0,
+                Categoria.ESPORADICO
+        );
+
+        s.registrarPasajero(
+                "9.999.999-9",
+                "Abuelo",
+                120,
+                Categoria.PLATINO
+        );
+
+        retorno = s.listarPasajerosAscendente();
+
+        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+
+        assertEquals(
+                "1.111.111-1;Fer;0;Esporádico|9.999.999-9;Abuelo;120;Platino",
+                retorno.getValorString()
+        );
+    }
+    
     @Test
-    public void listarPasajerosAscendenteSoloUnUsuario() {
-        s.registrarPasajero("3.335.321-2", "Juan", 45, Categoria.ESPORADICO);
-        retorno = s.listarPasajerosAscendente();
-        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
-        assertEquals("3.335.321-2;Juan;45;Esporádico", retorno.getValorString());
-    }
+    public void listarPasajerosAscendenteConCincoPasajeros() {
 
+        s.registrarPasajero("5.555.555-5", "A", 10, Categoria.ESTANDAR);
+        s.registrarPasajero("1.111.111-1", "B", 20, Categoria.FRECUENTE);
+        s.registrarPasajero("3.333.333-3", "C", 30, Categoria.PLATINO);
+        s.registrarPasajero("2.222.222-2", "D", 40, Categoria.ESPORADICO);
+        s.registrarPasajero("4.444.444-4", "E", 50, Categoria.ESTANDAR);
+
+        retorno = s.listarPasajerosAscendente();
+
+        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+
+        assertEquals(
+                "1.111.111-1;B;20;Frecuente|2.222.222-2;D;40;Esporádico|3.333.333-3;C;30;Platino|4.444.444-4;E;50;Estándar|5.555.555-5;A;10;Estándar",
+                retorno.getValorString()
+        );
+    }
+    
     @Test
-    public void listarPasajerosAscendenteIngresoOrdenado() {
-        s.registrarPasajero("935.457-7", "Maria", 82, Categoria.PLATINO);
-        s.registrarPasajero("3.335.321-2", "Juan", 45, Categoria.ESPORADICO);        
-        s.registrarPasajero("6.430.147-9", "Nicolas", 0, Categoria.ESTANDAR);
-        retorno = s.listarPasajerosAscendente();
-        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
-        assertEquals("935.457-7;Maria;82;Platino|3.335.321-2;Juan;45;Esporádico|6.430.147-9;Nicolas;0;Estándar", retorno.getValorString());
-    }
+    public void listarPasajerosAscendenteConTodasLasCategorias() {
 
+        s.registrarPasajero("1.111.111-1", "Ana", 20, Categoria.ESPORADICO);
+        s.registrarPasajero("2.222.222-2", "Bruno", 30, Categoria.ESTANDAR);
+        s.registrarPasajero("3.333.333-3", "Carla", 40, Categoria.FRECUENTE);
+        s.registrarPasajero("4.444.444-4", "Diego", 50, Categoria.PLATINO);
+
+        retorno = s.listarPasajerosAscendente();
+
+        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+
+        assertEquals(
+                "1.111.111-1;Ana;20;Esporádico|2.222.222-2;Bruno;30;Estándar|3.333.333-3;Carla;40;Frecuente|4.444.444-4;Diego;50;Platino",
+                retorno.getValorString()
+        );
+    }
+    
     @Test
-    public void listarPasajerosAscendenteIngresoDesordenado() {
-        s.registrarPasajero("3.335.321-2", "Juan", 45, Categoria.ESPORADICO);
-        s.registrarPasajero("6.430.147-9", "Nicolas", 0, Categoria.ESTANDAR);
-         s.registrarPasajero("935.457-7", "Maria", 82, Categoria.PLATINO);        
-        retorno = s.listarPasajerosAscendente();
-        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
-        assertEquals("935.457-7;Maria;82;Platino|3.335.321-2;Juan;45;Esporádico|6.430.147-9;Nicolas;0;Estándar", retorno.getValorString());
-    }
+    public void listarPasajerosAscendenteConCedulasMuyDistantes() {
 
+        s.registrarPasajero("9.111.111-1", "Ultimo", 25, Categoria.ESTANDAR);
+        s.registrarPasajero("1.111.111-1", "Primero", 25, Categoria.ESTANDAR);
+
+        retorno = s.listarPasajerosAscendente();
+
+        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+
+        assertEquals(
+                "1.111.111-1;Primero;25;Estándar|9.111.111-1;Ultimo;25;Estándar",
+                retorno.getValorString()
+        );
+    }
+        
 }

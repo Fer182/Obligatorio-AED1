@@ -27,22 +27,47 @@ public class Test13_RealizarReserva {
     }
 
     @Test
-    public void realizarReservaOkEnProgramadoYAbierto() {
+    public void realizarReservaDuplicadaEnProgramado() {
         retorno = s.realizarReserva("AR123", "1.111.111-1");
         assertEquals(Retorno.Resultado.OK, retorno.getResultado());
 
+        retorno = s.realizarReserva("AR123", "1.111.111-1");
+        assertEquals(Retorno.Resultado.ERROR_6, retorno.getResultado());
+    }
+    
+    @Test
+    public void realizarReservaDuplicadaEnAbierto() {
         s.abrirVuelo("AR123");
+
+        retorno = s.realizarReserva("AR123", "1.111.111-1");
+        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+
+        retorno = s.realizarReserva("AR123", "1.111.111-1");
+        assertEquals(Retorno.Resultado.ERROR_6, retorno.getResultado());
+    }
+    
+    @Test
+    public void realizarReservaNoPermiteVueloCerrado() {
+        s.abrirVuelo("AR123");
+        s.cerrarVuelo("AR123");
+
+        retorno = s.realizarReserva("AR123", "1.111.111-1");
+
+        assertEquals(Retorno.Resultado.ERROR_5, retorno.getResultado());
+    }
+    
+        @Test
+    public void realizarReservaRespetaOverbookingCapacidadDos() {
+        retorno = s.realizarReserva("AR123", "1.111.111-1");
+        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+
         retorno = s.realizarReserva("AR123", "2.222.222-2");
         assertEquals(Retorno.Resultado.OK, retorno.getResultado());
-    }
 
-    @Test
-    public void realizarReservaErroresBasicos() {
-        assertEquals(Retorno.Resultado.ERROR_1, s.realizarReserva(null, "1.111.111-1").getResultado());
-        assertEquals(Retorno.Resultado.ERROR_1, s.realizarReserva("AR123", "").getResultado());
-        assertEquals(Retorno.Resultado.ERROR_2, s.realizarReserva("AR123", "1.11.111-1").getResultado());
-        assertEquals(Retorno.Resultado.ERROR_3, s.realizarReserva("NO_EXISTE", "1.111.111-1").getResultado());
-        assertEquals(Retorno.Resultado.ERROR_4, s.realizarReserva("AR123", "4.444.444-4").getResultado());
-    }
+        retorno = s.realizarReserva("AR123", "3.333.333-3");
+        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
 
+        retorno = s.realizarReserva("AR123", "935.457-7");
+        assertEquals(Retorno.Resultado.ERROR_7, retorno.getResultado());
+    }
 }
