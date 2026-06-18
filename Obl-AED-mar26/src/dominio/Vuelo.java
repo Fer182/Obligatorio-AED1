@@ -190,13 +190,13 @@ public class Vuelo implements Comparable<Vuelo>{
     return false;
 }
     
-@Override
-public String toString() {
-    return codigoAeropuertoOrigen + ":" + codigoAeropuertoDestino + ";" + codigoDeVuelo
-            + ";" + capacidad + ";" + costoEnDolares + ";" + estado.getTexto() + ";"
-            + getcantidadDeReservasTotales()
-            + ";" + getcantidadDePasajerosConfirmados();
-}
+    @Override
+    public String toString() {
+        return codigoAeropuertoOrigen + ":" + codigoAeropuertoDestino + ";" + codigoDeVuelo
+                + ";" + capacidad + ";" + costoEnDolares + ";" + estado.getTexto() + ";"
+                + getcantidadDeReservasTotales()
+                + ";" + getcantidadDePasajerosConfirmados();
+    }
     
     @Override
     public boolean equals(Object obj) {

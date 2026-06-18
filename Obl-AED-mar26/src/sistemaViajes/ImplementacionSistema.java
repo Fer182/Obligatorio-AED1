@@ -421,14 +421,16 @@ public class ImplementacionSistema implements Sistema {
                 if (!vueloActual.getEstado().equals("ABIERTO")) {
                     return Retorno.error5();
                 }
-
+                
+                if (vueloActual.tieneCheckIn(cedula)) {
+                    return Retorno.error7();
+                }
+                
                 if (!vueloActual.tieneReserva(cedula)) {
                     return Retorno.error6();
                 }
 
-                if (vueloActual.tieneCheckIn(cedula)) {
-                    return Retorno.error7();
-                }
+
 
                 if (vueloActual.getcantidadDePasajerosConfirmados() >= vueloActual.getCapacidad()) {
                     return Retorno.error8();
