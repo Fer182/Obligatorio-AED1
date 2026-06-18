@@ -13,16 +13,16 @@ import tads.Cola;
  *
  * @author FERAR
  */
-public class Aeropuerto implements Comparable<Aeropuerto> {
-    private String codigo;
-    private String nombre; 
-    private Cola<Vuelo> viajesEnEspera;
+    public class Aeropuerto implements Comparable<Aeropuerto> {
+        private String codigo;
+        private String nombre; 
+        private Cola<Vuelo> viajesEnEspera;
 
-public Aeropuerto(String codigo, String nombre) {
-    this.codigo = codigo;
-    this.nombre = nombre;
-    this.viajesEnEspera = new Cola<>();
-}
+    public Aeropuerto(String codigo, String nombre) {
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.viajesEnEspera = new Cola<>();
+    }
 
     public Aeropuerto(String codigo) {
         this.codigo = codigo;

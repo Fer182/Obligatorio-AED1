@@ -5,11 +5,14 @@ package sistemaViajes;
 import dominio.Aeropuerto;
 import dominio.Pasajero;
 import dominio.PasajeroWrapper;
+import dominio.Reserva;
 import dominio.Vuelo;
 import tads.ILista;
 import tads.Lista;
 
 public class ImplementacionSistema implements Sistema {
+    
+    //private ILista<Reserva> reservas;
     
     private ILista<Aeropuerto> listaDeAeropuertos;    
     
@@ -27,7 +30,9 @@ public class ImplementacionSistema implements Sistema {
     public Retorno inicializarSistema() {
     listaDeAeropuertos = new Lista<>();
     listaDeVuelos = new Lista<>();
-
+    
+    //reservas = new Lista<>();
+    
     listaDePasajeros = new Lista<>();
     listaDePasajerosWrapper = new Lista<>();
 
@@ -247,76 +252,225 @@ public class ImplementacionSistema implements Sistema {
         return Retorno.error2();
     }
     
-@Override
-public Retorno abrirVuelo(String codigoDeVuelo) {
+    @Override
+    public Retorno abrirVuelo(String codigoDeVuelo) {
 
-    if (codigoDeVuelo == null || codigoDeVuelo.trim().isEmpty()) {
-        return Retorno.error1();
-    }
-
-    int total = listaDeVuelos.cantidadElementos();
-    for (int i = 0; i < total; i++) {
-        Vuelo vueloActual = listaDeVuelos.obtenerElemento(i);
-        String vueloEst = vueloActual.getEstado();
-        if (vueloActual.getcodigoDeVuelo().equals(codigoDeVuelo)) {
-
-            if (!vueloEst.equals("PROGRAMADO")) {
-                return Retorno.error3();
-            }
-
-            vueloActual.setEstado(Estado.ABIERTO);
-            return Retorno.ok();
+        if (codigoDeVuelo == null || codigoDeVuelo.trim().isEmpty()) {
+            return Retorno.error1();
         }
+
+        int total = listaDeVuelos.cantidadElementos();
+        for (int i = 0; i < total; i++) {
+            Vuelo vueloActual = listaDeVuelos.obtenerElemento(i);
+            String vueloEst = vueloActual.getEstado();
+            if (vueloActual.getcodigoDeVuelo().equals(codigoDeVuelo)) {
+
+                if (!vueloEst.equals("PROGRAMADO")) {
+                    return Retorno.error3();
+                }
+
+                vueloActual.setEstado(Estado.ABIERTO);
+                return Retorno.ok();
+            }
+        }
+        return Retorno.error2();
     }
-    return Retorno.error2();
-}
 
     @Override
     public Retorno cerrarVuelo(String codigoDeVuelo) {
-        
+
         if (codigoDeVuelo == null || codigoDeVuelo.trim().isEmpty()) {
             return Retorno.error1();
         }
 
         Vuelo vuelo = new Vuelo(codigoDeVuelo);
 
-        if(!listaDeVuelos.existeElemento(vuelo)){
+        if (!listaDeVuelos.existeElemento(vuelo)) {
             return Retorno.error2();
         }
+
         int total = listaDeVuelos.cantidadElementos();
 
         for (int i = 0; i < total; i++) {
-            Vuelo vueloActual = listaDeVuelos.obtenerElemento(i);
-            Aeropuerto aeroActual = listaDeAeropuertos.obtenerElemento(i);
 
-            String vueloEst = vueloActual.getEstado();
+            Vuelo vueloActual = listaDeVuelos.obtenerElemento(i);
 
             if (vueloActual.getcodigoDeVuelo().equals(codigoDeVuelo)) {
-                if (vueloEst.equals("ABIERTO")) {
-                    aeroActual.getViajesEnEspera().enqueue(vueloActual);
-                    vueloActual.setEstado(Estado.CERRADO);
-                    return Retorno.ok(vueloActual.getPasajerosConfirmados(), vueloActual.getcantidadDeReservasSinConfirmar());
+
+                if (!vueloActual.getEstado().equals("ABIERTO")) {
+                    return Retorno.error3();
                 }
+
+                Aeropuerto aeroActual = null;
+
+                for (int j = 0; j < listaDeAeropuertos.cantidadElementos(); j++) {
+                    Aeropuerto a = listaDeAeropuertos.obtenerElemento(j);
+
+                    if (a.getCodigo().equals(vueloActual.getCodigoAeropuertoOrigen())) {
+                        aeroActual = a;
+                    }
+                }
+
+                aeroActual.getViajesEnEspera().enqueue(vueloActual);
+                vueloActual.setEstado(Estado.CERRADO);
+
+                return Retorno.ok(
+                    vueloActual.getPasajerosConfirmados(),
+                    vueloActual.getcantidadDeReservasSinConfirmar()
+                );
             }
         }
-        return Retorno.error3();
+
+        return Retorno.error2();
     }
 
     @Override
     public Retorno realizarReserva(String codigoDeVuelo, String cedula) {
 
-        return Retorno.noImplementada();
+        if (codigoDeVuelo == null || codigoDeVuelo.trim().isEmpty()
+                || cedula == null || cedula.trim().isEmpty()) {
+            return Retorno.error1();
+        }
 
+        if (!cedula.matches("([1-9]\\.\\d{3}\\.\\d{3}-\\d)|([1-9]\\d{2}\\.\\d{3}-\\d)")) {
+            return Retorno.error2();
+        }
+
+        Vuelo vueloBuscado = new Vuelo(codigoDeVuelo);
+        if (!listaDeVuelos.existeElemento(vueloBuscado)) {
+            return Retorno.error3();
+        }
+
+        Pasajero pasajeroBuscado = new Pasajero(cedula);
+        if (!listaDePasajeros.existeElemento(pasajeroBuscado)) {
+            return Retorno.error4();
+        }
+
+        Pasajero pasajeroReal = obtenerPasajeroPorCedula(cedula);
+
+        for (int i = 0; i < listaDeVuelos.cantidadElementos(); i++) {
+            Vuelo vueloActual = listaDeVuelos.obtenerElemento(i);
+
+            if (vueloActual.getcodigoDeVuelo().equals(codigoDeVuelo)) {
+
+                String vueloEst = vueloActual.getEstado();
+
+                if (!vueloEst.equals("PROGRAMADO") && !vueloEst.equals("ABIERTO")) {
+                    return Retorno.error5();
+                }
+
+                if (vueloActual.tieneReserva(cedula) || vueloActual.tieneCheckIn(cedula)) {
+                    return Retorno.error6();
+                }
+
+                if (vueloActual.getcantidadDeReservasTotales() >= Math.ceil(vueloActual.getCapacidad() * 1.10)) {
+                    return Retorno.error7();
+                }
+
+                Reserva reserva = new Reserva(codigoDeVuelo, cedula);
+
+                vueloActual.agregarReserva(reserva);
+                vueloActual.agregarPasajero(pasajeroReal);
+
+                return Retorno.ok();
+            }
+        }
+
+        return Retorno.error3();
+    }
+
+    private Pasajero obtenerPasajeroPorCedula(String cedula) {
+        for (int i = 0; i < listaDePasajeros.cantidadElementos(); i++) {
+            Pasajero p = listaDePasajeros.obtenerElemento(i);
+
+            if (p.getCedula().equals(cedula)) {
+                return p;
+            }
+        }
+
+        return null;
     }
 
     @Override
     public Retorno realizarCheckIn(String codigoDeVuelo, String cedula) {
-        return Retorno.noImplementada();
+
+        if (codigoDeVuelo == null || codigoDeVuelo.trim().isEmpty()
+                || cedula == null || cedula.trim().isEmpty()) {
+            return Retorno.error1();
+        }
+
+        if (!cedula.matches("([1-9]\\.\\d{3}\\.\\d{3}-\\d)|([1-9]\\d{2}\\.\\d{3}-\\d)")) {
+            return Retorno.error2();
+        }
+
+        Vuelo vuelo = new Vuelo(codigoDeVuelo);
+        if (!listaDeVuelos.existeElemento(vuelo)) {
+            return Retorno.error3();
+        }
+
+        Pasajero pasajero = new Pasajero(cedula);
+        if (!listaDePasajeros.existeElemento(pasajero)) {
+            return Retorno.error4();
+        }
+
+        for (int i = 0; i < listaDeVuelos.cantidadElementos(); i++) {
+            Vuelo vueloActual = listaDeVuelos.obtenerElemento(i);
+
+            if (vueloActual.getcodigoDeVuelo().equals(codigoDeVuelo)) {
+
+                if (!vueloActual.getEstado().equals("ABIERTO")) {
+                    return Retorno.error5();
+                }
+
+                if (!vueloActual.tieneReserva(cedula)) {
+                    return Retorno.error6();
+                }
+
+                if (vueloActual.tieneCheckIn(cedula)) {
+                    return Retorno.error7();
+                }
+
+                if (vueloActual.getcantidadDePasajerosConfirmados() >= vueloActual.getCapacidad()) {
+                    return Retorno.error8();
+                }
+
+                vueloActual.realizarCheckIn(cedula);
+
+                return Retorno.ok();
+            }
+        }
+
+        return Retorno.error3();
     }
 
     @Override
     public Retorno embarqueYDespegueDeVuelo(String codigoAeropuerto) {
-        return Retorno.noImplementada();
+        
+        if(codigoAeropuerto == null || codigoAeropuerto.trim().isEmpty() ){
+            return Retorno.error1();
+        }
+        for (int i = 0; i < listaDeAeropuertos.cantidadElementos(); i++){
+        
+        Aeropuerto aeroActual = listaDeAeropuertos.obtenerElemento(i);
+        
+        if(aeroActual.getCodigo().equals(codigoAeropuerto)){
+        
+        if(aeroActual.getViajesEnEspera().size() == 0){
+        return Retorno.error3();
+        }
+        
+        Vuelo vuelo = aeroActual.getViajesEnEspera().peek();
+        aeroActual.getViajesEnEspera().dequeue();
+        
+        vuelo.setEstado(Estado.FINALIZADO);
+        
+        return Retorno.ok(
+                vuelo.getcodigoDeVuelo(),
+                aeroActual.getViajesEnEspera().size()
+            );  
+        }
+       }
+        return Retorno.error2();
     }
 
     @Override

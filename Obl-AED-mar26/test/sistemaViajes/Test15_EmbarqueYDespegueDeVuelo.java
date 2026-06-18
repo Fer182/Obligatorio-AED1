@@ -33,7 +33,7 @@ public class Test15_EmbarqueYDespegueDeVuelo {
         s.realizarCheckIn("AR123", "1.111.111-1");    
         
         s.cerrarVuelo("AR123");
-        retorno = s.embarqueYDespegueDeVuelo("AR123");
+        retorno = s.embarqueYDespegueDeVuelo("MVD");
         
         assertEquals(Retorno.Resultado.OK, retorno.getResultado());
         assertEquals("MVD:EZE;AR123;1;230;Finalizado;2;1", s.obtenerInformacionDeVuelo("AR123").getValorString());

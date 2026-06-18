@@ -4,6 +4,7 @@ import sistemaViajes.Estado;
 import sistemaViajes.EstadoReserva;
 import sistemaViajes.Retorno;
 import tads.ILista;
+import tads.Lista;
 
 /**
  *
@@ -28,8 +29,34 @@ public class Vuelo implements Comparable<Vuelo>{
         this.capacidad = capacidad;
         this.costoEnDolares = costoEnDolares;
         this.estado = estado.PROGRAMADO;
+        this.pasajeros = new Lista<>();
+        this.reservas = new Lista<>();
     }
 
+    public void agregarReserva(Reserva reserva) {
+    this.reservas.insertarOrdenado(reserva);
+}
+
+    public void agregarPasajero(Pasajero pasajero) {
+        this.pasajeros.insertarOrdenado(pasajero);
+    }
+
+    public String getCodigoAeropuertoOrigen() {
+        return codigoAeropuertoOrigen;
+    }
+
+    public String getCodigoDeVuelo() {
+        return codigoDeVuelo;
+    }
+
+    
+    public boolean getSuperoElOverbooking () {
+        if (cantidadDeReservas > capacidad*1.10) {
+            return true;
+        }
+        return false;
+    }
+    
     public Vuelo(String codigoDeVuelo) {
         this.codigoDeVuelo = codigoDeVuelo;
     }
@@ -82,16 +109,24 @@ public class Vuelo implements Comparable<Vuelo>{
     }
     
     public String getPasajerosConfirmados() {
-        int total = this.reservas.cantidadElementos();
         String pasajeros = "";
+
+        int total = this.reservas.cantidadElementos();
 
         for (int i = 0; i < total; i++) {
             Reserva reserva = this.reservas.obtenerElemento(i);
+
             if (reserva.getEstado().equals(EstadoReserva.CHECKIN)) {
                 Pasajero pasajero = this.getPasajeroPorCedula(reserva.getcedula());
+
                 pasajeros += pasajero.toString();
+
+                if (i < total - 1) {
+                    pasajeros += "|";
+                }
             }
         }
+
         return pasajeros;
     }
     
@@ -119,13 +154,49 @@ public class Vuelo implements Comparable<Vuelo>{
         return confirmados;
     }
     
-    
-    @Override
-    public String toString() {
-    return codigoAeropuertoOrigen + ":" + codigoAeropuertoDestino + ";" + codigoDeVuelo
-            + ";" + capacidad + ";" + costoEnDolares + ";" + estado.getTexto() + ";" + cantidadDeReservas
-            + ";" + cantidadDePasajerosConfirmados;
+    public boolean tieneCheckIn(String cedula) {
+    for (int i = 0; i < reservas.cantidadElementos(); i++) {
+        Reserva r = reservas.obtenerElemento(i);
+
+        if (r.getcedula().equals(cedula)
+                && r.getEstado().equals(EstadoReserva.CHECKIN)) {
+            return true;
+        }
     }
+
+    return false;
+    }
+    
+    public void realizarCheckIn(String cedula) {
+        for (int i = 0; i < reservas.cantidadElementos(); i++) {
+            Reserva r = reservas.obtenerElemento(i);
+
+            if (r.getcedula().equals(cedula)) {
+                r.setEstado(EstadoReserva.CHECKIN);
+            }
+        }
+    }
+    
+    public boolean tieneReserva(String cedula) {
+    for (int i = 0; i < reservas.cantidadElementos(); i++) {
+        Reserva r = reservas.obtenerElemento(i);
+
+        if (r.getcedula().equals(cedula)
+                && r.getEstado().equals(EstadoReserva.RESERVA)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+    
+@Override
+public String toString() {
+    return codigoAeropuertoOrigen + ":" + codigoAeropuertoDestino + ";" + codigoDeVuelo
+            + ";" + capacidad + ";" + costoEnDolares + ";" + estado.getTexto() + ";"
+            + getcantidadDeReservasTotales()
+            + ";" + getcantidadDePasajerosConfirmados();
+}
     
     @Override
     public boolean equals(Object obj) {
@@ -144,5 +215,5 @@ public class Vuelo implements Comparable<Vuelo>{
     public int compareTo(Vuelo o) {
         return this.codigoDeVuelo.compareTo(o.codigoDeVuelo);
     }
-   
+    
 }
