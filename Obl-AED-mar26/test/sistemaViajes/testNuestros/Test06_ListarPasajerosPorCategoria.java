@@ -24,17 +24,25 @@ public class Test06_ListarPasajerosPorCategoria {
         retorno = s.listarPasajerosPorCategoría(Categoria.FRECUENTE);
         assertEquals(Retorno.Resultado.OK, retorno.getResultado());
         assertEquals("", retorno.getValorString());
+        
+        retorno = s.listarPasajerosPorCategoría(Categoria.ESTANDAR);
+        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+        assertEquals("", retorno.getValorString());
+        
+        retorno = s.listarPasajerosPorCategoría(Categoria.PLATINO);
+        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+        assertEquals("", retorno.getValorString());
     }
 
     @Test
     public void listarCategoriaFiltraYOrdenaPorCedulaAscendente() {
-        s.registrarPasajero("4.985.345-4", "Ana", 25, Categoria.FRECUENTE);
-        s.registrarPasajero("935.457-7", "Zoe", 40, Categoria.PLATINO);
+        s.registrarPasajero("4.985.345-4", "Carlos", 69, Categoria.PLATINO);
+        s.registrarPasajero("935.457-7", "Mauro", 36, Categoria.PLATINO);
         s.registrarPasajero("1.345.345-4", "Alberto", 62, Categoria.FRECUENTE);
 
-        retorno = s.listarPasajerosPorCategoría(Categoria.FRECUENTE);
+        retorno = s.listarPasajerosPorCategoría(Categoria.PLATINO);
 
         assertEquals(Retorno.Resultado.OK, retorno.getResultado());
-        assertEquals("1.345.345-4;Alberto;62;Frecuente|4.985.345-4;Ana;25;Frecuente", retorno.getValorString());
+        assertEquals("935.457-7;Mauro;36;Platino|4.985.345-4;Carlos;69;Platino", retorno.getValorString());
     }
 }

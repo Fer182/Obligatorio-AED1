@@ -16,18 +16,18 @@ public class Test10_ObtenerInformacionDeVuelo {
     @Before
     public void setUp() {
         s.inicializarSistema();
-        s.registrarAeropuerto("MVD", "Aeropuerto de Carrasco");
-        s.registrarAeropuerto("EZE", "Ezeiza");
+        s.registrarAeropuerto("ART", "Aeropuerto de Artigas");
+        s.registrarAeropuerto("SLT", "Salto");
     }
 
     @Test
     public void obtenerInformacionVueloProgramadoSinReservas() {
-        s.registrarVuelo("MVD", "EZE", "AR123", 120, 230);
+        s.registrarVuelo("ART", "SLT", "AR123", 110, 280);
 
         retorno = s.obtenerInformacionDeVuelo("AR123");
 
         assertEquals(Retorno.Resultado.OK, retorno.getResultado());
-        assertEquals("MVD:EZE;AR123;120;230;Programado;0;0", retorno.getValorString());
+        assertEquals("ART:SLT;AR123;110;280;Programado;0;0", retorno.getValorString());
     }
 
     @Test

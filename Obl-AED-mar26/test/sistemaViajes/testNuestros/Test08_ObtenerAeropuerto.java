@@ -20,12 +20,12 @@ public class Test08_ObtenerAeropuerto {
 
     @Test
     public void obtenerAeropuertoOkSinVuelosEnCola() {
-        s.registrarAeropuerto("MVD", "Aeropuerto de Carrasco");
+        s.registrarAeropuerto("ART", "Aeropuerto de Artigas");
 
-        retorno = s.obtenerAeropuerto("MVD");
+        retorno = s.obtenerAeropuerto("ART");
 
         assertEquals(Retorno.Resultado.OK, retorno.getResultado());
-        assertEquals("MVD;Aeropuerto de Carrasco", retorno.getValorString());
+        assertEquals("ART;Aeropuerto de Artigas", retorno.getValorString());
         assertEquals(0, retorno.getValorEntero());
     }
 
@@ -37,7 +37,7 @@ public class Test08_ObtenerAeropuerto {
 
     @Test
     public void obtenerAeropuertoError02NoExiste() {
-        retorno = s.obtenerAeropuerto("EZE");
+        retorno = s.obtenerAeropuerto("123");
         assertEquals(Retorno.Resultado.ERROR_2, retorno.getResultado());
     }
 }

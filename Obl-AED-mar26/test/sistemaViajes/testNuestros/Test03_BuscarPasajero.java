@@ -24,21 +24,43 @@ public class Test03_BuscarPasajero {
 
     @Test
     public void buscarPasajeroOk() {
-        retorno = s.registrarPasajero("3.335.321-2", "Juan", 45, Categoria.ESPORADICO);
-        retorno = s.buscarPasajero("3.335.321-2");
+        retorno = s.registrarPasajero("7.335.584-2", "Carlos", 18, Categoria.FRECUENTE);
+        retorno = s.buscarPasajero("7.335.584-2");
         assertEquals(Retorno.Resultado.OK, retorno.getResultado());
-        assertEquals("3.335.321-2;Juan;45;Esporádico", retorno.getValorString());
+        assertEquals("7.335.584-2;Carlos;18;Frecuente", retorno.getValorString());
+        
+        retorno = s.registrarPasajero("3.123.456-7", "Mariana", 30, Categoria.ESTANDAR);
+        retorno = s.buscarPasajero("3.123.456-7");
+        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+        assertEquals("3.123.456-7;Mariana;30;Estándar", retorno.getValorString());
+
+        retorno = s.registrarPasajero("1.123.963-7", "Carla", 60, Categoria.PLATINO);
+        retorno = s.buscarPasajero("1.123.963-7");
+        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+        assertEquals("1.123.963-7;Carla;60;Platino", retorno.getValorString());
     }
 
     @Test
     public void buscarPasajeroError01() {
-        retorno = s.buscarPasajero("3..321-2");
+        retorno = s.buscarPasajero("asdasd");
+        assertEquals(Retorno.Resultado.ERROR_1, retorno.getResultado());
+        
+        retorno = s.buscarPasajero("124323");
+        assertEquals(Retorno.Resultado.ERROR_1, retorno.getResultado());
+        
+        retorno = s.buscarPasajero("333-333-.11");
         assertEquals(Retorno.Resultado.ERROR_1, retorno.getResultado());
     }
 
     @Test
     public void buscarPasajeroError02() {
-        retorno = s.buscarPasajero("5.365.221-1");
+        retorno = s.buscarPasajero("7.785.006-1");
+        assertEquals(Retorno.Resultado.ERROR_2, retorno.getResultado());
+        
+        retorno = s.buscarPasajero("6.666.696-9");
+        assertEquals(Retorno.Resultado.ERROR_2, retorno.getResultado());
+        
+        retorno = s.buscarPasajero("6.767.676-7");
         assertEquals(Retorno.Resultado.ERROR_2, retorno.getResultado());
     }
 
