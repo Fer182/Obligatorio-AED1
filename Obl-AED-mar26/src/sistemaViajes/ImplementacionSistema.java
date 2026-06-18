@@ -477,7 +477,53 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno consultaDisponibilidad(int[][] matriz, int cantidad, Clase unaClase) {
-        return Retorno.noImplementada();
-    } 
+        if (cantidad <= 0) {
+            return Retorno.error1();
+        }
+        
+        String[] letras = {"A", "B", "C", "D", "E", "F"};
 
+        int opciones = 0;
+        String valorString = "";
+
+        int colInicio = 0;
+        int colFin = matriz[0].length - 1;
+
+        if (unaClase == Clase.PRIMERA) {
+            colInicio = 0;
+            colFin = 2;
+        } else if (unaClase == Clase.EJECUTIVA) {
+            colInicio = 3;
+            colFin = 6;
+        } else if (unaClase == Clase.TURISTA) {
+            colInicio = 7;
+            colFin = matriz[0].length - 1;
+        }
+
+        for (int columna = colInicio; columna <= colFin; columna++) {
+            for (int i = 0; i < matriz.length; i++) {
+                if (matriz[i][columna] == 0) {
+                    int encontrados = 0;
+                    String opcion = "";
+                    for (int fila = i; fila < matriz.length && encontrados < cantidad; fila++) {
+                        if (matriz[fila][columna] == 0) {
+                            if (!opcion.isEmpty()) {
+                                opcion += "-";
+                            }
+                            opcion += letras[fila] + (columna + 1);
+                            encontrados++;
+                        }
+                    }
+                    if (encontrados == cantidad) {
+                        if (!valorString.isEmpty()) {
+                            valorString += "|";
+                        }
+                        valorString += opcion;
+                        opciones++;
+                    }
+                }
+            }
+        }
+        return Retorno.ok(valorString, opciones);
+    }
 }
