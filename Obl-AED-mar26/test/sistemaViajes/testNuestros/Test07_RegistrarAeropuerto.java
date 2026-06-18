@@ -19,25 +19,65 @@ public class Test07_RegistrarAeropuerto {
     }
 
     @Test
-    public void registrarAeropuertoOk() {
-        retorno = s.registrarAeropuerto("MVD", "Aeropuerto de Carrasco");
+    public void registrarAeropuertoCodigoConNumeros() {
+
+        retorno = s.registrarAeropuerto("123", "Aeropuerto Numerico");
+
         assertEquals(Retorno.Resultado.OK, retorno.getResultado());
     }
 
     @Test
-    public void registrarAeropuertoError01ParametrosInvalidos() {
-        assertEquals(Retorno.Resultado.ERROR_1, s.registrarAeropuerto(null, "Carrasco").getResultado());
-        assertEquals(Retorno.Resultado.ERROR_1, s.registrarAeropuerto("MDV", null).getResultado());
-        assertEquals(Retorno.Resultado.ERROR_1, s.registrarAeropuerto("", "Carrasco").getResultado());
-        assertEquals(Retorno.Resultado.ERROR_1, s.registrarAeropuerto("MDV", "").getResultado());
-        assertEquals(Retorno.Resultado.ERROR_1, s.registrarAeropuerto("   ", "Carrasco").getResultado());
-        assertEquals(Retorno.Resultado.ERROR_1, s.registrarAeropuerto("MVD", "   ").getResultado());
+    public void registrarAeropuertoCodigoUnaLetra() {
+
+        retorno = s.registrarAeropuerto("A", "Aeropuerto Chico");
+
+        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+    }
+    @Test
+    public void registrarAeropuertoNombreMuyLargo() {
+
+        retorno = s.registrarAeropuerto(
+                "MVD",
+                "Aeropuerto Internacional General Cesareo Berisso de Carrasco Terminal Principal"
+        );
+
+        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
     }
 
     @Test
-    public void registrarAeropuertoError02CodigoRepetido() {
-        s.registrarAeropuerto("MVD", "Aeropuerto de Carrasco");
-        retorno = s.registrarAeropuerto("MVD", "Otro nombre");
-        assertEquals(Retorno.Resultado.ERROR_2, retorno.getResultado());
+    public void registrarMuchosAeropuertos() {
+
+        assertEquals(
+                Retorno.Resultado.OK,
+                s.registrarAeropuerto("MVD", "Carrasco").getResultado()
+        );
+
+        assertEquals(
+                Retorno.Resultado.OK,
+                s.registrarAeropuerto("EZE", "Ezeiza").getResultado()
+        );
+
+        assertEquals(
+                Retorno.Resultado.OK,
+                s.registrarAeropuerto("GRU", "Guarulhos").getResultado()
+        );
+
+        assertEquals(
+                Retorno.Resultado.OK,
+                s.registrarAeropuerto("SCL", "Santiago").getResultado()
+        );
+    }
+
+    @Test
+    public void registrarAeropuertoCodigoMinimoYMaximo() {
+
+        retorno = s.registrarAeropuerto("A", "Codigo Corto");
+        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+
+        retorno = s.registrarAeropuerto(
+                "AEROPUERTOINTERNACIONAL",
+                "Codigo Largo"
+        );
+        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
     }
 }

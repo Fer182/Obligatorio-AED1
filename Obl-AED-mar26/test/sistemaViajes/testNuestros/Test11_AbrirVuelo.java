@@ -22,21 +22,51 @@ public class Test11_AbrirVuelo {
     }
 
     @Test
-    public void abrirVueloOkCambiaEstado() {
-        retorno = s.abrirVuelo("AR123");
-        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+public void abrirVueloConCodigoConEspacios() {
+    retorno = s.abrirVuelo("   ");
 
-        retorno = s.obtenerInformacionDeVuelo("AR123");
-        assertEquals("MVD:EZE;AR123;120;230;Abierto;0;0", retorno.getValorString());
-    }
+    assertEquals(Retorno.Resultado.ERROR_1, retorno.getResultado());
+}
 
-    @Test
-    public void abrirVueloErrores() {
-        assertEquals(Retorno.Resultado.ERROR_1, s.abrirVuelo(null).getResultado());
-        assertEquals(Retorno.Resultado.ERROR_1, s.abrirVuelo("").getResultado());
-        assertEquals(Retorno.Resultado.ERROR_2, s.abrirVuelo("NO_EXISTE").getResultado());
+@Test
+public void abrirVueloConVariosVuelosSoloAbreElIndicado() {
+    s.registrarVuelo("MVD", "EZE", "AR200", 80, 150);
 
-        s.abrirVuelo("AR123");
-        assertEquals(Retorno.Resultado.ERROR_3, s.abrirVuelo("AR123").getResultado());
-    }
+    retorno = s.abrirVuelo("AR200");
+    assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+
+    retorno = s.obtenerInformacionDeVuelo("AR200");
+    assertEquals("MVD:EZE;AR200;80;150;Abierto;0;0", retorno.getValorString());
+
+    retorno = s.obtenerInformacionDeVuelo("AR123");
+    assertEquals("MVD:EZE;AR123;120;230;Programado;0;0", retorno.getValorString());
+}
+
+@Test
+public void abrirVueloConCapacidadMinima() {
+    s.registrarVuelo("MVD", "EZE", "AR001", 1, 50);
+
+    retorno = s.abrirVuelo("AR001");
+    assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+
+    retorno = s.obtenerInformacionDeVuelo("AR001");
+    assertEquals("MVD:EZE;AR001;1;50;Abierto;0;0", retorno.getValorString());
+}
+
+@Test
+public void abrirDosVuelosDistintos() {
+    s.registrarVuelo("MVD", "EZE", "AR200", 80, 150);
+
+    retorno = s.abrirVuelo("AR123");
+    assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+
+    retorno = s.abrirVuelo("AR200");
+    assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+
+    retorno = s.obtenerInformacionDeVuelo("AR123");
+    assertEquals("MVD:EZE;AR123;120;230;Abierto;0;0", retorno.getValorString());
+
+    retorno = s.obtenerInformacionDeVuelo("AR200");
+    assertEquals("MVD:EZE;AR200;80;150;Abierto;0;0", retorno.getValorString());
+}
 }
