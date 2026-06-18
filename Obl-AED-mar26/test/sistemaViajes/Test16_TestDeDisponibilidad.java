@@ -82,7 +82,7 @@ public class Test16_TestDeDisponibilidad {
     }
 
     @Test
-    void consultaDisponibilidadPrimeraClaseCantidadEs2() {
+    public void consultaDisponibilidadPrimeraClaseCantidadEs2() {
         /*
          * P primera
          * E ejecutiva
@@ -109,7 +109,7 @@ public class Test16_TestDeDisponibilidad {
     }
 
     @Test
-    void consultaDisponibilidadPrimeraClaseUnaOpcionLibreSegundaFila() {
+    public void consultaDisponibilidadPrimeraClaseUnaOpcionLibreSegundaFila() {
         /*
          * P primera
          * E ejecutiva
@@ -137,7 +137,7 @@ public class Test16_TestDeDisponibilidad {
     }
 
     @Test
-    void consultaDisponibilidadPrimeraClaseUnaOpcionLibrePrimeraFila() {
+    public void consultaDisponibilidadPrimeraClaseUnaOpcionLibrePrimeraFila() {
         /*
          * P primera
          * E ejecutiva
@@ -165,7 +165,7 @@ public class Test16_TestDeDisponibilidad {
     }
 
     @Test
-    void consultaDisponibilidadPrimeraClaseLlena() {
+    public void consultaDisponibilidadPrimeraClaseLlena() {
         /*
          * P primera
          * E ejecutiva
@@ -193,7 +193,7 @@ public class Test16_TestDeDisponibilidad {
     }
 
     @Test
-    void consultaDisponibilidadPrimeraClaseParcialementeLlenaYCantidadEs1() {
+    public void consultaDisponibilidadPrimeraClaseParcialementeLlenaYCantidadEs1() {
         /*
          * P primera
          * E ejecutiva
@@ -221,7 +221,7 @@ public class Test16_TestDeDisponibilidad {
     }
 
     @Test
-    void consultaDisponibilidad_claseEjecutivaLibreYCantidadEs6() {
+    public void consultaDisponibilidad_claseEjecutivaLibreYCantidadEs6() {
         /*
          * P primera
          * E ejecutiva
@@ -250,7 +250,7 @@ public class Test16_TestDeDisponibilidad {
     }
 
     @Test
-    void consultaDisponibilidad_claseEjecutivaSoloConCuatroCombinacionesYCantidadEs3() {
+    public void consultaDisponibilidad_claseEjecutivaSoloConCuatroCombinacionesYCantidadEs3() {
         /*
          * P primera
          * E ejecutiva
@@ -279,7 +279,7 @@ public class Test16_TestDeDisponibilidad {
     }
 
     @Test
-    void consultaDisponibilidad_claseEjecutivaSoloConUnaCombinacionDisponibleEnFila4YCantidadEs3() {
+    public void consultaDisponibilidad_claseEjecutivaSoloConUnaCombinacionDisponibleEnFila4YCantidadEs3() {
         /*
          * P primera
          * E ejecutiva
@@ -308,7 +308,7 @@ public class Test16_TestDeDisponibilidad {
     }
 
     @Test
-    void consultaDisponibilidad_claseEjecutivaSoloConUnaCombinacionDisponibleEnFila5YCantidadEs4() {
+    public void consultaDisponibilidad_claseEjecutivaSoloConUnaCombinacionDisponibleEnFila5YCantidadEs4() {
         /*
          * P primera
          * E ejecutiva
@@ -337,7 +337,7 @@ public class Test16_TestDeDisponibilidad {
     }
 
     @Test
-    void consultaDisponibilidad_claseEjecutivaSoloConUnaCombinacionDisponibleEnFila7YCantidadEs2() {
+    public void consultaDisponibilidad_claseEjecutivaSoloConUnaCombinacionDisponibleEnFila7YCantidadEs2() {
         /*
          * P primera
          * E ejecutiva
@@ -366,7 +366,7 @@ public class Test16_TestDeDisponibilidad {
     }
 
     @Test
-    void consultaDisponibilidad_claseEjecutivaParcialementeLlenaYCantidadEs1() {
+    public void consultaDisponibilidad_claseEjecutivaParcialementeLlenaYCantidadEs1() {
         /*
          * P primera
          * E ejecutiva
@@ -394,7 +394,7 @@ public class Test16_TestDeDisponibilidad {
     }
 
     @Test
-    void consultaDisponibilidad_claseTuristaLibreYCantidadEs6() {
+    public void consultaDisponibilidad_claseTuristaLibreYCantidadEs6() {
         /*
          * P primera
          * E ejecutiva
@@ -432,7 +432,7 @@ public class Test16_TestDeDisponibilidad {
     }
     
      @Test
-    void consultaDisponibilidad_claseTuristaSoloConCuatroCombinacionesYCantidadEs3() {
+    public void consultaDisponibilidad_claseTuristaSoloConCuatroCombinacionesYCantidadEs3() {
         /*
          * P primera
          * E ejecutiva
@@ -461,7 +461,7 @@ public class Test16_TestDeDisponibilidad {
     }
     
     @Test
-    void consultaDisponibilidad_claseTuristaParcialementeLlenaYCantidadEs1() {
+    public void consultaDisponibilidad_claseTuristaParcialementeLlenaYCantidadEs1() {
         /*
          * P primera
          * E ejecutiva

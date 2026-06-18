@@ -4,10 +4,14 @@ import sistemaViajes.Retorno;
 import sistemaViajes.ImplementacionSistema;
 import org.junit.Before;
 import org.junit.Test;
+import sistemaViajes.Categoria;
+import sistemaViajes.ImplementacionSistema;
+import sistemaViajes.Retorno;
 import static org.junit.Assert.*;
 import sistemaViajes.Sistema;
+import sistemaViajes.Sistema;
 
-public class Test04_ListarPasajeros {
+public class Test04_ListarPasajerosAscendente {
 
     private Retorno retorno;
     private final Sistema s = new ImplementacionSistema();

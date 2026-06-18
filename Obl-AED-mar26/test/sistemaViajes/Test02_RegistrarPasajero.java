@@ -2,6 +2,10 @@ package sistemaViajes;
 
 import org.junit.Before;
 import org.junit.Test;
+import sistemaViajes.Categoria;
+import sistemaViajes.ImplementacionSistema;
+import sistemaViajes.Retorno;
+import sistemaViajes.Sistema;
 import static org.junit.Assert.*;
 
 public class Test02_RegistrarPasajero {
